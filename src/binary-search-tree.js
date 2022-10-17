@@ -55,21 +55,21 @@ class BinarySearchTree {
   }
 
   find(data) {
-    return searchWithin(this.nodeRoot, data);
-
     function searchWithin(node, data) {
       if (!node) {
         return null;
       }
 
       if (node.data === data) {
-        return node.data;
+        return node;
       }
 
       return data < node.data ? 
         searchWithin(node.left, data) : 
         searchWithin(node.right, data);
     }
+
+    return searchWithin(this.nodeRoot, data);
   }
 
   remove(data) {
