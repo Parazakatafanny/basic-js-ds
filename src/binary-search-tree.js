@@ -55,23 +55,63 @@ class BinarySearchTree {
   }
 
   find(data) {
-    return _find(this.nodeRoot, data);
+    return searchWithin(this.nodeRoot, data);
 
-    function _find(node, data) {
-      if (node === null) {
-          return null;
-      } else if (data < node.data) {
-          return this._find(node.left, data);
-      } else if (data > node.data) {
-          return this._find(node.right, data);
-      } else {
-          return node;
+    function searchWithin(node, data) {
+      if (!node) {
+        return null;
       }
+
+      if (node.data === data) {
+        return node.data;
+      }
+
+      return data < node.data ? 
+        searchWithin(node.left, data) : 
+        searchWithin(node.right, data);
     }
   }
 
   remove(data) {
-   
+    this.nodeRoot = removeNode(this.nodeRoot, data);
+
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }
+
+      if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (node.data < data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        if (!node.left && !node.right) {
+          return null;
+        }
+
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
+
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+
+        let minFromRight = node.right;
+        while (minFromRight.left) {
+          minFromRight = minFromRight.left;
+        }
+        node.data = minFromRight.data;
+
+        node.right = removeNode(node.right, minFromRight.data);
+
+        return node;
+      }
+    }
   }
 
   min() {
